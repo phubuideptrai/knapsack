@@ -1,0 +1,270 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+
+\usepackage[ruled, lined, linesnumbered, commentsnumbered, longend]{algorithm2e}
+\usepackage{xcolor}
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{multicol}
+\usepackage{graphicx}
+\usepackage[]{algorithm2e}
+\usepackage[english]{babel}
+\usepackage[square,numbers]{natbib}
+\usepackage[colorlinks, citecolor = black, urlcolor = gray, bookmarks = false, hypertexnames = true ]{hyperref} 
+\bibliographystyle{abbrvnat}
+\usepackage{scrextend}
+\newcommand\footnoteref[1]{\protected@xdef\@thefnmark{\ref{#1}}\@footnotemark}
+\usepackage[a4paper, total={170mm,257mm},left=20mm,right=20mm, top=20mm,]{geometry}
+\title{\textbf{Report for Knapsack solution}\\ by Google OR-Tools}
+\author{\textbf{Thanh Phu Bui}\\
+Faculty of Software Engineering, University of Information Technology\\
+\small 19522018@gm.uit.edu.vn }
+\date{$30^{th}$ April 2022}
+
+\begin{document}
+\maketitle
+
+\section{Knapsack problem}
+The knapsack problem is a problem in combinatorial optimization: Given a set of items, each with a weight and a value, determine the number of each item to include in a collection so that the total weight is less than or equal to a given limit and the total value is as large as possible.\\
+
+The problem often arises in resource allocation where the decision makers have to choose from a set of non-divisible projects or tasks under a fixed budget or time constraint, respectively.
+
+\subsection{Problem}
+You and 4 scientists are researching the radioactive properties of different combinations of elements to find a new clean energy source for the planet. While the radioactive levels in the elements and mixtures are low, you decided that you want to hike out to a remote lab to ensure the safety of the civilian population. Each of you has 1 element packing bag that has the ability to hold \textbf{50 pounds (lbs)} of weight and a volume capacity of \textbf{50 cubic inches}. In addition, you and the group can only be exposed to maximum radioactivity of \textbf{25 rads}, therefore, \textbf{each bag can only have a maximum of 5 rads} to ensure safety that no one’s bag has too much radiation and is hurting the carrier. Each element has a certain level of value (\textbf{utils}) and the goal of the team is to pick the best combination of items that maximize your team's utility while still safely packing the 5 bags. How should the 5 bags be packed with the given item? (\textbf{The words “Bag” and “Knapsack” are interchangeable})
+\begin{center}
+    \begin{figure}[htp]
+    \begin{center}
+     \includegraphics[scale=.5]{problem}
+    \end{center}
+    \caption{Parameters for each of the items.}
+    \label{refPic1}
+    \end{figure}
+\end{center}
+\subsection{Google OR-Tools}
+OR-Tools is an open source software suite for optimization, tuned for tackling the world's toughest problems in vehicle routing, flows, integer and linear programming, and constraint programming.\\
+
+I used the knapsack solving tool from Google OR-Tools. Since this is a closed source, then I have fewer things to privately customize. I custom it to stops if there is no optimal solution after 3 minutes. 
+
+\section{Solving Knapsack with OR-Tools} 
+I use the file \textit{s005.kp} for all of test cases.
+\subsection{Uncorrelated}
+    \begin{center}
+        \begin{tabular}{|c|c| c|c| c|c| c|c| c|c|}
+        \hline
+            No& The maximum weight & Total weight & Total value& Time&Conclusion \\
+        \hline
+            50 & 11922 & 11921 & 19780 & 0.001 & \textbf{Optimal}\\
+            100 & 28462 & 28455 & 42224 & 0.0004 & \textbf{Optimal}\\
+            200 & 47601 & 47601 & 86024 & 0.0006 & \textbf{Optimal}\\
+            500 & 120137 & 120129 & 202400 & 0.0021 & \textbf{Optimal}\\
+            1000 & 243749 & 243745 & 403106 & 0.0043 & \textbf{Optimal}\\
+    \hline
+        \hline 
+        \end{tabular}
+    \end{center}
+\subsection{WeaklyCorrelated}
+    \begin{center}
+        \begin{tabular}{|c|c| c|c| c|c| c|c| c|c|}
+        \hline
+            No& The maximum weight & Total weight & Total value& Time&Conclusion \\
+        \hline
+            50 & 12719 & 12715 & 14125 & 0.0004 & \textbf{Optimal}\\
+            100 & 24642 & 24637 & 27933 & 0.0006 & \textbf{Optimal}\\
+            200 & 53104 & 53102 & 57753 & 0.001 & \textbf{Optimal}\\
+            500 & 123199 & 123199 & 135595 & 0.0017 & \textbf{Optimal}\\
+            1000 & 243336 & 243336 & 268214 & 0.0032 & \textbf{Optimal}\\
+    \hline
+        \hline 
+        \end{tabular}
+    \end{center}
+\subsection{StronglyCorrelated}
+    \begin{center}
+        \begin{tabular}{|c|c| c|c| c|c| c|c| c|c|}
+        \hline
+            No& The maximum weight & Total weight & Total value& Time&Conclusion \\
+        \hline
+            50 & 12719 & 12719 & 16219 & 0.029 & \textbf{Optimal}\\
+            100 & 24642 & 24642 & 31842 & 0.0039 & \textbf{Optimal}\\
+            200 & 53104 & 53104 & 66904 & 0.04 & \textbf{Optimal}\\
+            500 & 123199 & 122984 & 158184 & 180.03 & \textbf{Non Optimal}\\
+            1000 & 243336 & 243169 & 313969 & 205.09 & \textbf{Non Optimal}\\
+    \hline
+        \hline 
+        \end{tabular}
+    \end{center}
+\subsection{InverseStronglyCorrelated}
+    \begin{center}
+        \begin{tabular}{|c|c| c|c| c|c| c|c| c|c|}
+        \hline
+            No& The maximum weight & Total weight & Total value& Time&Conclusion \\
+        \hline
+            50 & 15194 & 15194 & 13594 & 21.538 & \textbf{Optimal}\\
+            100 & 29592 & 29592 & 26592 & 0.016 & \textbf{Optimal}\\
+            200 & 63005 & 62977 & 56477 & 12.935 & \textbf{Optimal}\\
+            500 & 147951 & 147951 & 132251 & 27.083 & \textbf{Optimal}\\
+            1000 & 292841 & 292748 & 261648 & 186.66 & \textbf{Non Optimal}\\
+    \hline
+        \hline 
+        \end{tabular}
+    \end{center}
+\subsection{AlmostStronglyCorrelated}
+    \begin{center}
+        \begin{tabular}{|c|c| c|c| c|c| c|c| c|c|}
+        \hline
+            No& The maximum weight & Total weight & Total value& Time&Conclusion \\
+        \hline
+            50 & 12719 & 12719 & 16204 & 18.063 & \textbf{Optimal}\\
+            100 & 24642 & 24641 & 31891 & 0.0028 & \textbf{Optimal}\\
+            200 & 53104 & 53104 & 66890 & 0.0024 & \textbf{Optimal}\\
+            500 & 123199 & 123134 & 158328 & 180.01 & \textbf{Non Optimal}\\
+            1000 & 243336 & 243315 & 314138 & 203.40 & \textbf{Non Optimal}\\
+    \hline
+        \hline 
+        \end{tabular}
+    \end{center}
+\subsection{SubsetSum}
+    \begin{center}
+        \begin{tabular}{|c|c| c|c| c|c| c|c| c|c|}
+        \hline
+            No& The maximum weight & Total weight & Total value& Time&Conclusion \\
+        \hline
+            50 & 12719 & 12719 & 12719 & 22.383 & \textbf{Optimal}\\
+            100 & 24642 & 24642 & 24642 & 0.001 & \textbf{Optimal}\\
+            200 & 53104 & 53104 & 53104 & 0.0008 & \textbf{Optimal}\\
+            500 & 123199 & 123199 & 123199 & 0.0012 & \textbf{Optimal}\\
+            1000 & 243336 & 243336 & 243336 & 0.003 & \textbf{Optimal}\\
+    \hline
+        \hline 
+        \end{tabular}
+    \end{center}
+\subsection{UncorrelatedWithSimilarWeights}
+    \begin{center}
+        \begin{tabular}{|c|c| c|c| c|c| c|c| c|c|}
+        \hline
+            No& The maximum weight & Total weight & Total value& Time&Conclusion \\
+        \hline
+            50 & 2476436 & 2401442 & 19503 & 0.006 & \textbf{Optimal}\\
+            100 & 4953340 & 4902512 & 39025 & 0.004 & \textbf{Optimal}\\
+            200 & 9905740 & 9904796 & 79002 & 0.0009 & \textbf{Optimal}\\
+            500 & 24764470 & 24711907 & 186275 & 180.01 & \textbf{Non Optimal}\\
+            1000 & 49529307 & 49523855 & 369485 & 18.84 & \textbf{Optimal}\\
+    \hline
+        \hline 
+        \end{tabular}
+    \end{center}
+\subsection{SpannerUncorrelated}
+    \begin{center}
+        \begin{tabular}{|c|c| c|c| c|c| c|c| c|c|}
+        \hline
+            No& The maximum weight & Total weight & Total value& Time&Conclusion \\
+        \hline
+            50 & 9808 & 9808 & 7728 & 2.89 & \textbf{Optimal}\\
+            100 & 21063 & 21022 & 16562 & 189.78 & \textbf{Non Optimal}\\
+            200 & 41847 & 41847 & 32977 & 307.73 & \textbf{Non Optimal}\\
+            500 & 104142 & 104125 & 82075 & 272.35 & \textbf{Non Optimal}\\
+            1000 & 210868 & 210827 & 166173 & 180.07 & \textbf{Non Optimal}\\
+    \hline
+        \hline 
+        \end{tabular}
+    \end{center}
+\subsection{SpannerWeaklyCorrelated}
+    \begin{center}
+        \begin{tabular}{|c|c| c|c| c|c| c|c| c|c|}
+        \hline
+            No& The maximum weight & Total weight & Total value& Time&Conclusion \\
+        \hline
+            50 & 7688 & 7683 & 18104 & 58.44 & \textbf{Optimal}\\
+            100 & 16528 & 16527 & 38960 & 178.73 & \textbf{Non Optimal}\\
+            200 & 32786 & 32763 & 77262 & 244.88 & \textbf{Non Optimal}\\
+            500 & 81588 & 81539 & 192286 & 235.01 & \textbf{Non Optimal}\\
+            1000 & 165198 & 165155 & 389470 & 252.18 & \textbf{Non Optimal}\\
+    \hline
+        \hline 
+        \end{tabular}
+    \end{center}
+\subsection{SpannerStronglyCorrelated}
+    \begin{center}
+        \begin{tabular}{|c|c| c|c| c|c| c|c| c|c|}
+        \hline
+            No& The maximum weight & Total weight & Total value& Time&Conclusion \\
+        \hline
+            50 & 7814 & 7813 & 21313 & 58.29 & \textbf{Optimal}\\
+            100 & 16600 & 16592 & 44492 & 180.10 & \textbf{Non Optimal}\\
+            200 & 32802 & 32761 & 90261 & 276.70 & \textbf{Non Optimal}\\
+            500 & 81687 & 81672 & 225472 & 240.44 & \textbf{Non Optimal}\\
+            1000 & 165436 & 165430 & 457030 & 246.09 & \textbf{Non Optimal}\\
+    \hline
+        \hline 
+        \end{tabular}
+    \end{center}
+\subsection{MultipleStronglyCorrelated}
+    \begin{center}
+        \begin{tabular}{|c|c| c|c| c|c| c|c| c|c|}
+        \hline
+            No& The maximum weight & Total weight & Total value& Time&Conclusion \\
+        \hline
+            50 & 12714 & 12713 & 20813 & 35.28 & \textbf{Optimal}\\
+            100 & 16600 & 16592 & 44492 & 0.011 & \textbf{Optimal}\\
+            200 & 53100 & 53100 & 84200 & 180.00 & \textbf{Non Optimal}\\
+            500 & 123198 & 123198 & 201698 & 201.78 & \textbf{Non Optimal}\\
+            1000 & 243336 & 243336 & 399336 & 23.65 & \textbf{Optimal}\\
+    \hline
+        \hline 
+        \end{tabular}
+    \end{center}
+\subsection{ProfitCeiling}
+    \begin{center}
+        \begin{tabular}{|c|c| c|c| c|c| c|c| c|c|}
+        \hline
+            No& The maximum weight & Total weight & Total value& Time&Conclusion \\
+        \hline
+            50 & 12719 & 12718 & 12708 & 0.071 & \textbf{Optimal}\\
+            100 & 24642 & 24640 & 24627 & 1.51 & \textbf{Optimal}\\
+            200 & 53104 & 53103 & 53082 & 180.53 & \textbf{Non Optimal}\\
+            500 & 123199 & 123199 & 123153 & 142.92 & \textbf{Optimal}\\
+            1000 & 243336 & 243334 & 243240 & 201.31 & \textbf{Non Optimal}\\
+    \hline
+        \hline 
+        \end{tabular}
+    \end{center}
+\subsection{Circle}
+    \begin{center}
+        \begin{tabular}{|c|c| c|c| c|c| c|c| c|c|}
+        \hline
+            No& The maximum weight & Total weight & Total value& Time&Conclusion \\
+        \hline
+            50 & 12719 & 12719 & 268001 & 36.63 & \textbf{Optimal}\\
+            100 & 24642 & 24642 & 519231 & 0.066 & \textbf{Optimal}\\
+            200 & 53104 & 53104 & 1118954 & 176.77 & \textbf{Non Optimal}\\
+            500 & 123199 & 123199 & 2595920 & 96.24 & \textbf{Optimal}\\
+            1000 & 243336 & 243336 & 5127320 & 180.52 & \textbf{Non Optimal}\\
+    \hline
+        \hline 
+        \end{tabular}
+    \end{center}
+    
+
+
+\subsection{Conclusion}
+Results from 13 sets of test cases:\\
+
+The easy one consists of three groups:
+
+\begin{enumerate}
+    \item \textbf{Uncorrelated} and \textbf{WeaklyCorrelated} there is no relationship or only a very week relationship between the weight of each item and its value.
+    \item \textbf{SpannerStronglyCorrelated} has the weight of each item which is equal with its value.
+\end{enumerate}
+
+The most difficult group is:
+\begin{enumerate}
+ 	\item \textbf{SpannerUncorrelated}: In these instances there is no correlation between the profit and weight of an item. Such instances illustrate those situations where it is reasonable to assume that the profit does not depend on the weight. Uncorrelated instances are generally easy to solve, as there is a large variation between the profits and weights, making it easy to fathom numerous variables by upper bound tests or by dominance relations.
+ 	\item \textbf{SpannerWeaklyCorrelated}: Spanner weakly correlated instances have a very high correlation between the profit and weight of an item. Typically the profit differs from the weight by only a few percent. Such instances are perhaps the most realistic in management, as it is well-known that the return of an investment is generally proportional to the sum invested within some small variations.
+ 	\item \textbf{SpannerStronglyCorrelated}: The strongly correlated instances are hard to solve for two reasons:
+ 	\begin{enumerate}
+		\item  The instances are ill-conditioned in the sense that there is a large gap between the continuous and integer solution of the problem.
+		\item  Sorting the items according to decreasing efficiencies correspond to a sorting according to the weights. Thus for any small interval of the ordered items (i.e. a “core”) there ’ is a limited variation in the weights, making it difficult to satisfy the capacity constraint with equality.
+	\end{enumerate}
+\end{enumerate}
+Today we looked out how to solve the multiple knapsack problems with multiple constraints. When dealing with problems that can be framed linearly, \textbf{Google OR Tools} is an excellent resource that offers a wide range of different solvers.
+\end{document}
